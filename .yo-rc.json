@@ -1,0 +1,10 @@
+{
+  "generator-sppp": {
+    "app.name": "btcog-attendance",
+    "sppp.version": "2.1.9",
+    "app.description": "",
+    "app.author": "",
+    "conf.spFolder": "siteassets/membersreports",
+    "conf.distFolder": "./dist"
+  }
+}

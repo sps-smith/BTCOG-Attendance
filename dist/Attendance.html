@@ -1,0 +1,279 @@
+<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+<link href="../siteassets/monthlyreport/attendance.css" rel="stylesheet">
+
+<div id="app">
+    <fn-select></fn-select>
+    <att-report></att-report>
+</div>
+
+<script src="http://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+<script src='https://cdn.polyfill.io/v2/polyfill.min.js'></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuex"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script>
+<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+<script type="text/javascript" src="../siteassets/monthlyreport/attendance.js"></script>
+<script>
+
+var _select = Vue.component("fn-select",{
+    template:'<div id="dvSelect">\
+                <div>\
+                  <span>Select Month: </span>\
+                  <select v-model="selectedMonth">\
+                    <option v-for="(mon, idx) in months" :value="idx">{{mon}}</option>\
+                  </select>\
+                </div>\
+                <div class="dvYear">\
+                  <span>Select Year: </span>\
+                  <select v-model="selectedYear">\
+                    <option v-for="(yer, idx) in years" :value="yer">{{yer}}</option>\
+                  </select>\
+                </div>\
+                <div class="dvButtons">\
+                  <b-button size="sm" :formatter="below0" lazy-formatter variant="success" @click="getfinance" :disabled="disablebutton">Get existing report</b-button>\
+                  <b-button size="sm" :formatter="below0" lazy-formatter variant="primary" @click="newreport" :disabled="disablebutton">Start new report</b-button>\
+                </div>\
+              </div>',
+    data: function(){
+        return{
+            selectedMonth:0,
+            selectedYear:0,
+            disablebutton: true
+        }
+    },
+    computed:{
+        months: function(){
+            return store.getters.getMonths;
+        },
+        years: function(){
+            return store.getters.getYears;
+        },
+        printdisabled: function(){
+            return store.getters.getRevenueLoaded;
+        }
+    },
+    methods: {
+        getfinance: function(){
+            // if (this.selectedMonth != "" && this.selectedYear != "")
+            //     store.dispatch("GetFinanceData", {parm: this.selectedMonth, parm1: this.selectedYear});
+        },
+        newreport: function (param) {  
+            store.commit("setPeriod", this.months[this.selectedMonth] + " " + this.selectedYear);
+            store.commit("setNewReport", true);
+        },
+        printreport: function () {
+            // var mywindow = window.open('', 'Data', 'height=800');
+            // mywindow.document.write('<html><head><title></title>');            
+            // mywindow.document.write('<style type="text/css">table {width:100%;border:1px solid lightgrey; font-size:9pt;} .totalcss {border-top: 1px solid #000; border-bottom: 4px double #000;} .totalcss th  {vertical-align: middle;} .noheader {display: none;} .netcss {border-top: 4px double #000; border-bottom: 4px double #000;} .netcss td{vertical-align: middle;font-weight: bold;} .neg{color: red;} h2{ text-align:left} td, th{ text-align:right; width:10%;} div.financeTitle h2{text-align: center; font-size: 1.2rem; font-weight: normal; margin-bottom: 0; text-transform: uppercase;} td:first-child, th:first-child{ text-align:left; width:40%;}</style>');
+            // mywindow.document.write('</head><body >');
+            // mywindow.document.write($("div#dvFinance").html());
+            // mywindow.document.write('</body></html>');
+
+            // mywindow.document.close();
+            // mywindow.focus();
+            // mywindow.print();
+            // mywindow.close();
+        }
+    },
+    watch:{
+        selectedMonth: function(){
+            if (this.selectedMonth > 0 && this.selectedYear > 0)
+                this.disablebutton = false;
+            else
+                this.disablebutton = true;
+        },
+        selectedYear: function(){
+            if (this.selectedMonth > 0 && this.selectedYear > 0)
+                this.disablebutton = false;
+            else
+                this.disablebutton = true;
+        }
+    }
+})
+
+var _rdata = Vue.component("att-report",{
+    template:'<div id="reportcss" v-if="newreport">\
+                <h2 class="reporttitle">Monthly Attendance Report</h2>\
+                <h2 class="reporttitle">for {{dte}}</h2>\
+                <div>\
+                    <table width="100%">\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">Name of Church:</span>\
+                            </td>\
+                            <td>\
+                                Brampton Triumphant Church of God\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Name of Pastor:</span>\
+                            </td>\
+                            <td>\
+                                John Walker\
+                            </td>\
+                        </tr>\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">Church Address:</span>\
+                            </td>\
+                            <td>\
+                                28 Westwyn Court, Unit 7 <br>Brampton, Ontario L6T 4T5\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Pastor Address:</span>\
+                            </td>\
+                            <td>\
+                                28 Westwyn Court, Unit 7 <br>Brampton, Ontario L6T 4T5\
+                            </td>\
+                        </tr>\
+                    </table>\
+                    <hr>\
+                </div>\
+                <div>\
+                    <table width="100%" class="col4">\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">Average Attendance for S.S.:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="ssattendance" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">S.S. Offering for the month:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="csscurrency" v-model="ssoffering" />\
+                            </td>\
+                        </tr>\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">Average Attendance for YPE:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="cssnum" v-model="ypeattendance" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">YPE Offering for the month:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="csscurrency" v-model="ypeoffering" />\
+                            </td>\
+                        </tr>\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">Average Attendance - regular service:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="cssnum" v-model="regattendance" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Offering for the month:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="csscurrency" v-model="offering" />\
+                            </td>\
+                        </tr>\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">No. of messages preached:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="cssnum" v-model="messages" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Tithes for the month:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="csscurrency" v-model="tithes" />\
+                            </td>\
+                        </tr>\
+                    </table>\
+                </div>\
+                <div>\
+                    <table width="100%" class="col6">\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">No. of Bible class:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="bibleclass" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">No. of fasting:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="fasting" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">No. of home visits:</span>\
+                            </td>\
+                            <td>\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="homevisits" />\
+                            </td>\
+                        </tr>\
+                    </table>\
+                </div>\
+                <div>\
+                    <table width="100%" class="col4">\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">No. of street services:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="streetservice" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">No. of revival services:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="revivalservice" />\
+                            </td>\
+                        </tr>\
+                    </table>\
+                </div>\
+            </div>',
+    data: function(){
+        return{
+            ssattendance:0,
+            ssoffering:0,
+            ypeattendance:0,
+            ypeoffering:0,
+            regattendance:0,
+            offering:0,
+            messages:0,
+            tithes:0,
+            bibleclass:0,
+            fasting:0,
+            homevisits:0,
+            streetservice:0,
+            revivalservice:0
+        }
+    },
+    computed:{
+        dte: function(){
+            return store.getters.getPeriod;
+        },
+        newreport: function(){
+            return store.getters.getNewReport;
+        }
+    },
+    methods:{
+        below0: function(value, event){
+            var vl = value;
+            if (value < 0)
+            {
+                alert("Value cannot be less than 0");
+                vl = 0;
+            }
+            return vl;
+        }
+    }
+})
+
+var app = new Vue({
+    el: "#app",
+
+})
+</script>

@@ -1,0 +1,346 @@
+<link href="../styles/app.css" rel="stylesheet" />
+<div class="selectreport">
+    <h1 class="reporttitle">Monthly Attendance Report</h1>
+        <table width="100%">
+            <tr>
+                <td>Select Month:</td>
+                <td>
+                    <select class="monthsl">
+                        <option value="1" selected="selected">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </td>
+                <td>Select Year:</td>
+                <td>
+                    <select class="yearsl">
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017" selected="selected">2017</option>
+                        <option value="2016">2016</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="button" value="Get Report" onclick="loadReport('','')" />
+                    <input type="button" value="New Report" onclick="showData('')" />
+                </td>
+            </tr>
+        </table>
+</div>
+<div class="reportData">
+   
+        <h1 class="reporttitle">Monthly Attendance Report</h1>
+        <h1 class="reportinfo"></h1>
+        <table width="100%">
+            <tr>
+                <td>
+                    <span class="tdlable">Name of Church:</span>
+                </td>
+                <td>
+                    Brampton Triumphant Church of God
+                </td>
+                <td>
+                    <span class="tdlable">Name of Pastor:</span>
+                </td>
+                <td>
+                    John Walker
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="tdlable">Church Address:</span>
+                </td>
+                <td>
+                    28 Westwyn Court, Unit 7 <br>Brampton, Ontario L6T 4T5
+                </td>
+                <td>
+                    <span class="tdlable">Pastor Address:</span>
+                </td>
+                <td>
+                    28 Westwyn Court, Unit 7 <br>Brampton, Ontario L6T 4T5
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <table width="100%">
+            <tr>
+                <td>
+                    <span class="tdlable">Average Attendance for S.S.:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum ssattendance" />
+                </td>
+                <td>
+                    <span class="tdlable">S.S. Offering for the month:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency ssoffering" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="tdlable">Average Attendance for YPE:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum ypeattendance" />
+                </td>
+                <td>
+                    <span class="tdlable">YPE Offering for the month:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency ypeoffering" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="tdlable">Average Attendance - regular service:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum regattendance" />
+                </td>
+                <td>
+                    <span class="tdlable">Offering for the month:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency offering" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="tdlable">No. of messages preached:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum messages" />
+                </td>
+                <td>
+                    <span class="tdlable">Tithes for the month:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency tithes" />
+                </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <td>
+                    <span class="tdlable">No. of Bible class:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum bibleclass" />
+                </td>
+                <td>
+                    <span class="tdlable">No. of fasting:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum fasting" />
+                </td>
+                <td>
+                    <span class="tdlable">No. of home visits:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum homevisits" />
+                </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <td>
+                    <span class="tdlable">No. of street services:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum streetservice" />
+                </td>
+                <td>
+                    <span class="tdlable">No. of revival services:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum revivalservice" />
+                </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <td>
+                    <span class="tdlable">No. of converts:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum converts" />
+                </td>
+                <td>
+                    <span class="tdlable">No. of people baptized:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum baptized" />
+                </td>
+                <td>
+                    <span class="tdlable">No. added to the church:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum added" />
+                </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <td>
+                    <span class="tdlable">No. excommunicated from the church:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum excommunicated" />
+                </td>
+                <td>
+                    <span class="tdlable">Total membership:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum membership" />
+                </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <td>
+                    <span class="tdlable">No. of men's services:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum mens" />
+                </td>
+                <td>
+                    <span class="tdlable">No. of women's services:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum womens" />
+                </td>
+                <td>
+                    <span class="tdlable">No. of youth services:</span>
+                </td>
+                <td>
+                    <input type="text" class="cssnum youth" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="tdlable">Men's offering:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency mensoffering" />
+                </td>
+                <td>
+                    <span class="tdlable">Women's offering:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency womensoffering" />
+                </td>
+                <td>
+                    <span class="tdlable">Youth offering:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency youthoffering" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="tdlable">Special offering:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency specialoffering" />
+                </td>
+                <td>
+                    <span class="tdlable">Rally offering:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency rallyoffering" />
+                </td>
+                <td>
+                    <span class="tdlable">Pastor's' offering:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency pastoroffering" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="tdlable">Amount paid mortgage:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency mortgagamount" />
+                </td>
+                <td>
+                    <span class="tdlable">Rent paid:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency rentamount" />
+                </td>
+                <td>
+                    <span class="tdlable">Utilities:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency utilitiesamount" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="tdlable">Donations given:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency donationamout" /><br>
+                    (e.g. visiting minister)
+                </td>
+                <td>
+                    <span class="tdlable">Misc. expenses:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency miscamount" />
+                </td>
+                <td>
+                    <span class="tdlable">Amt. sent H.Q.:</span>
+                </td>
+                <td>
+                    <input type="text" class="csscurrency hqamount" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="tdlable">Comments:</span>
+                </td>
+                <td colspan="5">
+                    <textarea rows="4" cols="150" class="csstext comments" ></textarea>
+                </td>
+            </tr>
+        </table>
+        <div class="submitted">
+        <table>
+            <tr>
+                <td  class="tdlable">Submitted By:</td><td><input type="text" placeholder="Enter submitter name" class="txtSubmitter" /></td><td><input type="button" class="submitButton" value="Submit" onclick="submitData()" /></td>
+            </tr>
+        </table>
+        </div>
+        <div class="approval">
+        <table>
+            <tr>
+                <td  class="tdlable">Approved By:</td><td><input type="text" placeholder="Enter approver name" class="txtApprover" /></td><td><input type="button" class="approveButton" value="Approved" onclick="approveData()" /></td>
+            </tr>
+        </table>
+        </div>
+    <hr>
+    <div class="dvButtons">
+        <input type="button" value="Save" onclick="saveData('Not Sure')" /><input type="button" value="Clear data" onclick="clearData()" /><input type="button" value="print report" onclick="printReport()" />
+    </div>
+    <input type="hidden" class="hidSubmitted" />
+</div>
+ <div id="printData">
+ </div>
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+ <script  src="http://btcog.ca/fn/siteassets/financial/accounting.js"></script>
+ <script  src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+ <link href="https://printjs-4de6.kxcdn.com/print.min.css" rel="stylesheet" />
+ 

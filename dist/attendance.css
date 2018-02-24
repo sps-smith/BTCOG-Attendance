@@ -1,0 +1,44 @@
+body {
+  font-size: .9rem; }
+
+*, ::after, ::before {
+  box-sizing: content-box; }
+
+#contentRow {
+  padding-top: 40px; }
+
+div#dvSelect {
+  display: flex;
+  -ms-flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  justify-content: flex-start; }
+  div#dvSelect div.dvButtons, div#dvSelect div.dvYear {
+    margin-left: 10px; }
+
+div#reportcss h2 {
+  text-align: center; }
+
+div#reportcss .tdlable {
+  font-weight: bold;
+  white-space: nowrap; }
+
+div#reportcss table.col4 tr td:first-child, div#reportcss table.col4 tr td:nth-child(3) {
+  width: 350px; }
+
+div#reportcss table.col4 tr td:nth-child(2), div#reportcss table.col4 tr td:nth-child(4) {
+  width: 400px;
+  padding-top: 5px; }
+
+div#reportcss table.col6 tr td:first-child, div#reportcss table.col6 tr td:nth-child(3), div#reportcss table.col6 tr td:nth-child(5) {
+  width: 300px;
+  padding-top: 5px; }
+
+div#reportcss table.col6 tr td:nth-child(2), div#reportcss table.col6 tr td:nth-child(4), div#reportcss table.col6 tr td:nth-child(6) {
+  width: 200px; }
+
+div#reportcss .cssnum, div#reportcss .csscurrency {
+  text-align: right; }
+
+.form-control {
+  width: 80%; }
