@@ -53,14 +53,37 @@ div#reportcss
 
     table.col6 tr td:nth-child(2), table.col6 tr td:nth-child(4), table.col6 tr td:nth-child(6){
         width:200px;
+        padding-top:5px;
     }
 
     .cssnum, .csscurrency{
         text-align: right;
+    }
+
+    table.col2 tr td:first-child
+    {
+        width:200px;
     }
 }
 
 .form-control
 {
     width: 80%;
+}
+
+div#dvusers
+{
+    margin-top:10px;
+    
+    div.form-row
+    {
+        -ms-flex-wrap: nowrap;
+        -webkit-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    }
+
+    .form-control
+    {
+        width: 50%;
+    }
 }

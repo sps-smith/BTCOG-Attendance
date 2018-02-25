@@ -19,7 +19,7 @@
 <script>
 
 var _select = Vue.component("fn-select",{
-    template:'<div id="dvSelect">\
+    template:'<div id="dvSelect" v-if="!dataloaded">\
                 <div>\
                   <span>Select Month: </span>\
                   <select v-model="selectedMonth">\
@@ -33,8 +33,8 @@ var _select = Vue.component("fn-select",{
                   </select>\
                 </div>\
                 <div class="dvButtons">\
-                  <b-button size="sm" :formatter="below0" lazy-formatter variant="success" @click="getfinance" :disabled="disablebutton">Get existing report</b-button>\
-                  <b-button size="sm" :formatter="below0" lazy-formatter variant="primary" @click="newreport" :disabled="disablebutton">Start new report</b-button>\
+                  <b-button size="sm" variant="success" @click="getfinance" :disabled="disablebutton">Get existing report</b-button>\
+                  <b-button size="sm" variant="primary" @click="newreport" :disabled="disablebutton">Start new report</b-button>\
                 </div>\
               </div>',
     data: function(){
@@ -53,16 +53,50 @@ var _select = Vue.component("fn-select",{
         },
         printdisabled: function(){
             return store.getters.getRevenueLoaded;
+        },
+        dataloaded: function(){
+            return store.getters.getDataLoaded;
         }
     },
     methods: {
         getfinance: function(){
-            // if (this.selectedMonth != "" && this.selectedYear != "")
-            //     store.dispatch("GetFinanceData", {parm: this.selectedMonth, parm1: this.selectedYear});
+            var self = this;
+            axios.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')/items?$filter=Month eq " + this.selectedMonth + " and Year eq " + this.selectedYear,{
+                headers: { "accept": "application/json;odata=verbose" }
+            })
+            .then(function(response){
+                if (response.data.d.results.length == 0)
+                    alert("No report found for the month and year selected");
+                else
+                {
+                    store.commit("setPeriod", self.months[self.selectedMonth] + " " + self.selectedYear);
+                    store.commit("setNewReport", true);
+                }
+            })     
         },
         newreport: function (param) {  
-            store.commit("setPeriod", this.months[this.selectedMonth] + " " + this.selectedYear);
-            store.commit("setNewReport", true);
+            var self = this;
+            axios.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')/items?$filter=Month eq " + this.selectedMonth + " and Year eq " + this.selectedYear,{
+                headers: { "accept": "application/json;odata=verbose" }
+            })
+            .then(function(response){
+                if (response.data.d.results.length > 0)
+                {
+                    var ans = confirm("A report already exists for the month and year selected. Do you wnat to load that report?");
+                    if (ans)
+                    {
+                        store.dispatch("getSavedData", response.data.d.results[0]);
+                        store.commit("setSavedReport", true);
+                        store.commit("setPeriod", self.months[self.selectedMonth] + " " + self.selectedYear);
+                    }
+                }
+                else
+                {
+                    store.commit("setPeriod", self.months[self.selectedMonth] + " " + self.selectedYear);
+                    store.commit("setNewReport", true);
+                    store.commit("setDataLoaded", true);
+                }
+            })            
         },
         printreport: function () {
             // var mywindow = window.open('', 'Data', 'height=800');
@@ -95,7 +129,7 @@ var _select = Vue.component("fn-select",{
 })
 
 var _rdata = Vue.component("att-report",{
-    template:'<div id="reportcss" v-if="newreport">\
+    template:'<div id="reportcss" v-if="newreport || savedreport">\
                 <h2 class="reporttitle">Monthly Attendance Report</h2>\
                 <h2 class="reporttitle">for {{dte}}</h2>\
                 <div>\
@@ -115,13 +149,13 @@ var _rdata = Vue.component("att-report",{
                             </td>\
                         </tr>\
                         <tr>\
-                            <td>\
+                            <td valign="top">\
                                 <span class="tdlable">Church Address:</span>\
                             </td>\
                             <td>\
                                 28 Westwyn Court, Unit 7 <br>Brampton, Ontario L6T 4T5\
                             </td>\
-                            <td>\
+                            <td valign="top">\
                                 <span class="tdlable">Pastor Address:</span>\
                             </td>\
                             <td>\
@@ -233,6 +267,185 @@ var _rdata = Vue.component("att-report",{
                         </tr>\
                     </table>\
                 </div>\
+                <div>\
+                    <table width="100%" class="col6">\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">No. of converts:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="converts" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">No. of people baptized:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="baptized" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">No. added to the church:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="added" />\
+                            </td>\
+                        </tr>\
+                    </table>\
+                </div>\
+                <div>\
+                    <table width="100%" class="col4">\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">No. excommunicated from the church:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="excommunicated" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Total membership:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="membership" />\
+                            </td>\
+                        </tr>\
+                    </table>\
+                </div>\
+                <div>\
+                    <table width="100%" class="col6">\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">No. of men\'s services:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="mens" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">No. of women\'s services:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="womens" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">No. of youth services:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="youth" />\
+                            </td>\
+                        </tr>\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">Men\'s offering:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="mensoffering" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Women\'s offering:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="womensoffering" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Youth offering:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="youthoffering" />\
+                            </td>\
+                        </tr>\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">Special offering:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="specialoffering" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Rally offering:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="rallyoffering" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Pastor\'s offering:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="pastoroffering" />\
+                            </td>\
+                        </tr>\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">Amount paid mortgage:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="mortgagamount" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Rent paid:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="rentamount" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Utilities:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="utilitiesamount" />\
+                            </td>\
+                        </tr>\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">Donations given:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="donationamout" aria-describedby="inputFormatterHelp"/>\
+                                 <b-form-text id="inputFormatterHelp">\
+                                    (e.g. visiting minister)\
+                                </b-form-text>\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Misc. expenses:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="miscamount" />\
+                            </td>\
+                            <td>\
+                                <span class="tdlable">Amt. sent H.Q.:</span>\
+                            </td>\
+                            <td>\
+                                 <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="csscurrency" v-model="hqamount" />\
+                            </td>\
+                        </tr>\
+                    </table>\
+                </div>\
+                <div>\
+                    <table width="100%" class="col2">\
+                        <tr>\
+                            <td>\
+                                <span class="tdlable">Comments:</span>\
+                            </td>\
+                            <td >\
+                                <b-form-textarea :rows="4" class="csstext" v-model="comments" ></b-form-textarea>\
+                            </td>\
+                        </tr>\
+                    </table>\
+                </div>\
+                <div id="dvusers" v-if="newreport">\
+                    <b-form-group horizontal :label-cols="1" label-size="sm" label="Submitted By:" label-for="submitby" class="tdlable" >\
+                        <b-form-input id="submitby" readonly></b-form-input>\
+                    </b-form-group>\
+                    <b-form-group horizontal :label-cols="1" label-size="sm" class="tdlable" label="Approved By:" label-for="approveby">\
+                        <b-form-input id="approveby" size="sm" readonly></b-form-input>\
+                    </b-form-group>\
+                </div>\
+                <div>\
+                    <hr>\
+                    <b-button size="sm" variant="success" @click="submitform">Submit for approval</b-button>\
+                    <b-button size="sm" variant="secondary" @click="saveform" :disabled="changesnotmade">Save data</b-button>\
+                    <b-button size="sm" variant="warning" @click="cleardata" :disabled="changesnotmade">Clear data</b-button>\
+                    <b-button v-if="saved" size="sm" variant="primary">Print report</b-button>\
+                    <b-button v-if="saved" size="sm" variant="outline-success">Copy data</b-button>\
+                    <b-button v-if="saved" size="sm" variant="outline-danger">Delete </b-button>\
+                    <b-button v-if="saved" size="sm" variant="outline-primary">New report </b-button>\
+                </div>\
             </div>',
     data: function(){
         return{
@@ -248,7 +461,30 @@ var _rdata = Vue.component("att-report",{
             fasting:0,
             homevisits:0,
             streetservice:0,
-            revivalservice:0
+            revivalservice:0,
+            converts:0,
+            baptized:0,
+            added:0,
+            excommunicated:0,
+            membership:0,
+            mens:0,
+            womens:0,
+            youth:0,
+            mensoffering:0,
+            womensoffering:0,
+            youthoffering:0,
+            specialoffering:0,
+            rallyoffering:0,
+            pastoroffering:0,
+            mortgagamount:0,
+            rentamount:0,
+            utilitiesamount:0,
+            donationamout:0,
+            miscamount:0,
+            hqamount:0,
+            comments:"",
+            saved: false,
+            changesnotmade: true
         }
     },
     computed:{
@@ -257,6 +493,48 @@ var _rdata = Vue.component("att-report",{
         },
         newreport: function(){
             return store.getters.getNewReport;
+        },
+        savedreport: function(){
+            var data = store.getters.getSavedReportData;
+            if (data != null)
+            {
+                this.ssattendance = data.ssattendance;
+                this.ssoffering = data.ssoffering;
+                this.ypeattendance = data.ypeattendance;
+                this.ypeoffering = data.ypeoffering;
+                this.regattendance = data.regattendance;
+                this.offering = data.offering;
+                this.messages = data.messages
+                this.tithes = data.tithes;
+                this.bibleclass = data.bibleclass;
+                this.fasting = data.fasting;
+                this.homevisits = data.homevisits;
+                this.streetservice = data.streetservice;
+                this.revivalservice = data.revivalservice;
+                this.converts = data.converts;
+                this.baptized = data.baptized;
+                this.added = data.added;
+                this.excommunicated = data.excommunicated;
+                this.membership = data.membership;
+                this.mens = data.mens;
+                this.womens = data.womens;
+                this.youth = data.youth;
+                this.mensoffering = data.mensoffering;
+                this.womensoffering = data.womensoffering;
+                this.youthoffering = data.youthoffering;
+                this.specialoffering = data.specialoffering;
+                this.rallyoffering = data.rallyoffering;
+                this.pastoroffering = data.pastoroffering;
+                this.mortgagamount = data.mortgagamount;
+                this.rentamount = data.rentamount;
+                this.utilitiesamount = data.utilitiesamount;
+                this.donationamout = data.donationamout;
+                this.miscamount = data.miscamount;
+                this.hqamount = data.hqamount;
+                this.saved = true;
+                this.changesnotmade = false;
+            }
+            return store.getters.getSavedReport;
         }
     },
     methods:{
@@ -267,8 +545,143 @@ var _rdata = Vue.component("att-report",{
                 alert("Value cannot be less than 0");
                 vl = 0;
             }
+            else
+                this.changesnotmade = false;
             return vl;
+        },
+        cleardata: function(){
+            var ans = confirm("All the data in the form will be reset to 0.\nAre you sure?");
+            if (ans)
+            {
+                this.ssattendance = 0;
+                this.ssoffering = 0;
+                this.ypeattendance = 0;
+                this.ypeoffering = 0;
+                this.regattendance = 0;
+                this.offering = 0;
+                this.messages = 0;
+                this.tithes = 0;
+                this.bibleclass = 0;
+                this.fasting = 0;
+                this.homevisits = 0;
+                this.streetservice = 0;
+                this.revivalservice = 0;
+                this.converts = 0;
+                this.baptized = 0;
+                this.added = 0;
+                this.excommunicated = 0;
+                this.membership = 0;
+                this.mens = 0;
+                this.womens = 0;
+                this.youth = 0;
+                this.mensoffering = 0;
+                this.womensoffering = 0;
+                this.youthoffering = 0;
+                this.specialoffering = 0;
+                this.rallyoffering = 0;
+                this.pastoroffering = 0;
+                this.mortgagamount = 0;
+                this.rentamount = 0;
+                this.utilitiesamount = 0;
+                this.donationamout = 0;
+                this.miscamount = 0;
+                this.hqamount = 0;
+                this.changesnotmade = true;
+            }            
+        },
+        submitform: function () {  
+            var tot = this.ssattendance +
+                this.ssoffering +
+                this.ypeattendance +
+                this.ypeoffering +
+                this.regattendance +
+                this.offering +
+                this.messages +
+                this.tithes +
+                this.bibleclass +
+                this.fasting +
+                this.homevisits +
+                this.streetservice +
+                this.revivalservice +
+                this.converts +
+                this.baptized +
+                this.added +
+                this.excommunicated +
+                this.membership +
+                this.mens +
+                this.womens +
+                this.youth +
+                this.mensoffering +
+                this.womensoffering +
+                this.youthoffering +
+                this.specialoffering +
+                this.rallyoffering +
+                this.pastoroffering +
+                this.mortgagamount +
+                this.rentamount +
+                this.utilitiesamount +
+                this.donationamout +
+                this.miscamount +
+                this.hqamount;
+
+            if (tot == 0)
+            {
+                alert("You have not completed the form. An empty form cannot be submitted")
+                this.changesnotmade = true;
+            }
+            else
+            {
+
+            }
+        },
+        saveform: function(){
+            var tot = this.ssattendance +
+                this.ssoffering +
+                this.ypeattendance +
+                this.ypeoffering +
+                this.regattendance +
+                this.offering +
+                this.messages +
+                this.tithes +
+                this.bibleclass +
+                this.fasting +
+                this.homevisits +
+                this.streetservice +
+                this.revivalservice +
+                this.converts +
+                this.baptized +
+                this.added +
+                this.excommunicated +
+                this.membership +
+                this.mens +
+                this.womens +
+                this.youth +
+                this.mensoffering +
+                this.womensoffering +
+                this.youthoffering +
+                this.specialoffering +
+                this.rallyoffering +
+                this.pastoroffering +
+                this.mortgagamount +
+                this.rentamount +
+                this.utilitiesamount +
+                this.donationamout +
+                this.miscamount +
+                this.hqamount;
+
+            if (tot == 0)
+            {
+                alert("An empty form cannot be saved");
+                this.changesnotmade = true;
+            }
+            else
+            {
+                //axios.
+            }
         }
+    },
+    updated: function(){
+        
     }
 })
 
@@ -276,4 +689,13 @@ var app = new Vue({
     el: "#app",
 
 })
+
+function checkreport(mon, yer){
+    axios.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')/items?$filter=Month eq " + mon + " and Year eq " + yer,{
+        headers: { "accept": "application/json;odata=verbose" }
+    })
+    .then(function(response){
+
+    })
+}
 </script>

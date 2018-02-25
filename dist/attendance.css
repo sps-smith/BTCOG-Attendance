@@ -35,10 +35,23 @@ div#reportcss table.col6 tr td:first-child, div#reportcss table.col6 tr td:nth-c
   padding-top: 5px; }
 
 div#reportcss table.col6 tr td:nth-child(2), div#reportcss table.col6 tr td:nth-child(4), div#reportcss table.col6 tr td:nth-child(6) {
-  width: 200px; }
+  width: 200px;
+  padding-top: 5px; }
 
 div#reportcss .cssnum, div#reportcss .csscurrency {
   text-align: right; }
 
+div#reportcss table.col2 tr td:first-child {
+  width: 200px; }
+
 .form-control {
   width: 80%; }
+
+div#dvusers {
+  margin-top: 10px; }
+  div#dvusers div.form-row {
+    -ms-flex-wrap: nowrap;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap; }
+  div#dvusers .form-control {
+    width: 50%; }
