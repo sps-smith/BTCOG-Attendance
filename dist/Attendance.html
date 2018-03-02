@@ -69,8 +69,12 @@ var _select = Vue.component("fn-select",{
                     alert("No report found for the month and year selected");
                 else
                 {
+                    store.dispatch("getSavedData", response.data.d.results[0]);
                     store.commit("setPeriod", self.months[self.selectedMonth] + " " + self.selectedYear);
-                    store.commit("setNewReport", true);
+                    store.commit("setNewReport", false);
+                    store.commit("setSavedReport", true);
+                    store.commit("setSelectedMonth", self.selectedMonth);
+                    store.commit("setSelectedYear", self.selectedYear);
                 }
             })     
         },
@@ -82,19 +86,26 @@ var _select = Vue.component("fn-select",{
             .then(function(response){
                 if (response.data.d.results.length > 0)
                 {
-                    var ans = confirm("A report already exists for the month and year selected. Do you wnat to load that report?");
+                    var ans = confirm("A report already exists for the month and year selected. Do you want to load that report?");
                     if (ans)
                     {
                         store.dispatch("getSavedData", response.data.d.results[0]);
                         store.commit("setSavedReport", true);
+                        store.commit("setNewReport", false);
                         store.commit("setPeriod", self.months[self.selectedMonth] + " " + self.selectedYear);
+                        store.commit("setDataLoaded", true);
+                        store.commit("setSelectedMonth", self.selectedMonth);
+                        store.commit("setSelectedYear", self.selectedYear);
                     }
                 }
                 else
                 {
-                    store.commit("setPeriod", self.months[self.selectedMonth] + " " + self.selectedYear);
+                    store.dispatch("getSavedData", "");
                     store.commit("setNewReport", true);
-                    store.commit("setDataLoaded", true);
+                    store.commit("setSavedReport", false);
+                    store.commit("setPeriod", self.months[self.selectedMonth] + " " + self.selectedYear);
+                    store.commit("setSelectedMonth", self.selectedMonth);
+                    store.commit("setSelectedYear", self.selectedYear);
                 }
             })            
         },
@@ -438,13 +449,13 @@ var _rdata = Vue.component("att-report",{
                 </div>\
                 <div>\
                     <hr>\
-                    <b-button size="sm" variant="success" @click="submitform">Submit for approval</b-button>\
+                    // <b-button size="sm" variant="success" @click="submitform">Submit for approval</b-button>\
                     <b-button size="sm" variant="secondary" @click="saveform" :disabled="changesnotmade">Save data</b-button>\
                     <b-button size="sm" variant="warning" @click="cleardata" :disabled="changesnotmade">Clear data</b-button>\
                     <b-button v-if="saved" size="sm" variant="primary">Print report</b-button>\
                     <b-button v-if="saved" size="sm" variant="outline-success">Copy data</b-button>\
                     <b-button v-if="saved" size="sm" variant="outline-danger">Delete </b-button>\
-                    <b-button v-if="saved" size="sm" variant="outline-primary">New report </b-button>\
+                    <b-button size="sm" variant="outline-primary" @click="startover">Start over </b-button>\
                 </div>\
             </div>',
     data: function(){
@@ -483,15 +494,58 @@ var _rdata = Vue.component("att-report",{
             miscamount:0,
             hqamount:0,
             comments:"",
-            saved: false,
             changesnotmade: true
         }
     },
     computed:{
+        selectedmonth: function () {
+            return store.getters.getSelectedMonth;
+        },
+        selectedyear: function () {
+            return store.getters.getSelectedYear;
+        },
         dte: function(){
             return store.getters.getPeriod;
         },
+        saved: function(){
+            return store.getters.getSavedReport;
+        },
         newreport: function(){
+            this.ssattendance = 0;
+            this.ssoffering = 0;
+            this.ypeattendance = 0;
+            this.ypeoffering = 0;
+            this.regattendance = 0;
+            this.offering = 0;
+            this.messages = 0;
+            this.tithes = 0;
+            this.bibleclass = 0;
+            this.fasting = 0;
+            this.homevisits = 0;
+            this.streetservice = 0;
+            this.revivalservice = 0;
+            this.converts = 0;
+            this.baptized = 0;
+            this.added = 0;
+            this.excommunicated = 0;
+            this.membership = 0;
+            this.mens = 0;
+            this.womens = 0;
+            this.youth = 0;
+            this.mensoffering = 0;
+            this.womensoffering = 0;
+            this.youthoffering = 0;
+            this.specialoffering = 0;
+            this.rallyoffering = 0;
+            this.pastoroffering = 0;
+            this.mortgagamount = 0;
+            this.rentamount = 0;
+            this.utilitiesamount = 0;
+            this.donationamout = 0;
+            this.miscamount = 0;
+            this.hqamount = 0;
+            this.comments = "";
+            this.changesnotmade = true;
             return store.getters.getNewReport;
         },
         savedreport: function(){
@@ -531,9 +585,9 @@ var _rdata = Vue.component("att-report",{
                 this.donationamout = data.donationamout;
                 this.miscamount = data.miscamount;
                 this.hqamount = data.hqamount;
-                this.saved = true;
+                this.comments = data.comments;
                 this.changesnotmade = false;
-            }
+            }           
             return store.getters.getSavedReport;
         }
     },
@@ -548,6 +602,58 @@ var _rdata = Vue.component("att-report",{
             else
                 this.changesnotmade = false;
             return vl;
+        },
+        startover: function(){
+            if (!this.changesnotmade){                
+                var ans = confirm("Your changes have not been saved and will be lost.\nAre you sure?");
+                if (ans)
+                {
+                    this.ssattendance = 0;
+                    this.ssoffering = 0;
+                    this.ypeattendance = 0;
+                    this.ypeoffering = 0;
+                    this.regattendance = 0;
+                    this.offering = 0;
+                    this.messages = 0;
+                    this.tithes = 0;
+                    this.bibleclass = 0;
+                    this.fasting = 0;
+                    this.homevisits = 0;
+                    this.streetservice = 0;
+                    this.revivalservice = 0;
+                    this.converts = 0;
+                    this.baptized = 0;
+                    this.added = 0;
+                    this.excommunicated = 0;
+                    this.membership = 0;
+                    this.mens = 0;
+                    this.womens = 0;
+                    this.youth = 0;
+                    this.mensoffering = 0;
+                    this.womensoffering = 0;
+                    this.youthoffering = 0;
+                    this.specialoffering = 0;
+                    this.rallyoffering = 0;
+                    this.pastoroffering = 0;
+                    this.mortgagamount = 0;
+                    this.rentamount = 0;
+                    this.utilitiesamount = 0;
+                    this.donationamout = 0;
+                    this.miscamount = 0;
+                    this.hqamount = 0;
+                    this.comments = "";
+                    this.changesnotmade = true;
+                    store.commit("setDataLoaded",false);
+                    store.commit("setNewReport",false);
+                    store.commit("setSavedReport",false);
+                }                
+            }
+            else
+            {
+                store.commit("setDataLoaded",false);
+                store.commit("setNewReport",false);
+                store.commit("setSavedReport",false);
+            }
         },
         cleardata: function(){
             var ans = confirm("All the data in the form will be reset to 0.\nAre you sure?");
@@ -586,6 +692,7 @@ var _rdata = Vue.component("att-report",{
                 this.donationamout = 0;
                 this.miscamount = 0;
                 this.hqamount = 0;
+                this.comments = "";
                 this.changesnotmade = true;
             }            
         },
@@ -631,7 +738,42 @@ var _rdata = Vue.component("att-report",{
             }
             else
             {
-
+                if (this.newreport)
+                {
+                    savedata(this.selectedmonth,this.selectedyear, this.ssattendance,
+                    this.ssoffering,
+                    this.ypeattendance,
+                    this.ypeoffering,
+                    this.regattendance,
+                    this.offering,
+                    this.messages,
+                    this.tithes,
+                    this.bibleclass,
+                    this.fasting,
+                    this.homevisits,
+                    this.streetservice,
+                    this.revivalservice,
+                    this.converts,
+                    this.baptized,
+                    this.added,
+                    this.excommunicated,
+                    this.membership,
+                    this.mens,
+                    this.womens,
+                    this.youth,
+                    this.mensoffering,
+                    this.womensoffering,
+                    this.youthoffering,
+                    this.specialoffering,
+                    this.rallyoffering,
+                    this.pastoroffering,
+                    this.mortgagamount,
+                    this.rentamount,
+                    this.utilitiesamount,
+                    this.donationamout,
+                    this.miscamount,
+                    this.hqamount, this.comments,"Yes");
+                }
             }
         },
         saveform: function(){
@@ -676,7 +818,39 @@ var _rdata = Vue.component("att-report",{
             }
             else
             {
-                //axios.
+                savedata(this.selectedmonth,this.selectedyear, this.ssattendance,
+                    this.ssoffering,
+                    this.ypeattendance,
+                    this.ypeoffering,
+                    this.regattendance,
+                    this.offering,
+                    this.messages,
+                    this.tithes,
+                    this.bibleclass,
+                    this.fasting,
+                    this.homevisits,
+                    this.streetservice,
+                    this.revivalservice,
+                    this.converts,
+                    this.baptized,
+                    this.added,
+                    this.excommunicated,
+                    this.membership,
+                    this.mens,
+                    this.womens,
+                    this.youth,
+                    this.mensoffering,
+                    this.womensoffering,
+                    this.youthoffering,
+                    this.specialoffering,
+                    this.rallyoffering,
+                    this.pastoroffering,
+                    this.mortgagamount,
+                    this.rentamount,
+                    this.utilitiesamount,
+                    this.donationamout,
+                    this.miscamount,
+                    this.hqamount, this.comments,"No");
             }
         }
     },
