@@ -10,7 +10,7 @@ body{
     padding-top: 40px;
 }
 
-div#dvSelect
+div#dvSelect, div#dvcopy
 {
     display: flex;
     -ms-flex-flow: row wrap;
@@ -24,6 +24,10 @@ div#dvSelect
     }
 }
 
+div#dvcopy
+{
+    margin-bottom: 10px;
+}
 
 div#reportcss
 {

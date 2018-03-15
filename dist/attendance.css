@@ -7,14 +7,17 @@ body {
 #contentRow {
   padding-top: 40px; }
 
-div#dvSelect {
+div#dvSelect, div#dvcopy {
   display: flex;
   -ms-flex-flow: row wrap;
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
   justify-content: flex-start; }
-  div#dvSelect div.dvButtons, div#dvSelect div.dvYear {
+  div#dvSelect div.dvButtons, div#dvSelect div.dvYear, div#dvcopy div.dvButtons, div#dvcopy div.dvYear {
     margin-left: 10px; }
+
+div#dvcopy {
+  margin-bottom: 10px; }
 
 div#reportcss h2 {
   text-align: center; }

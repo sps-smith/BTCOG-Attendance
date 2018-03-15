@@ -241,13 +241,20 @@ function savedata(month, year, ssattendance ,
             .then(function(response){
                 if (response.status == 201)
                 { 
-                    alert("Record saved successfully");
-                    if (store.getters.getNewReport)
+                    if (code != "Copy")
                     {
-                        store.commit("setNewReport", false);
-                        store.commit("setSavedReport", true);
+                        alert("Record saved successfully");
+                        if (store.getters.getNewReport)
+                        {
+                            store.commit("setNewReport", false);
+                            store.commit("setSavedReport", true);
+                        }
+                        store.dispatch("getSavedData",response.data.d);
                     }
-                    store.dispatch("getSavedData",response.data.d);
+                    else
+                    {
+                        alert("Record copied successfully");
+                    }
                 }
                 else
                     alert("Error in saving information. Please retry or contact the developer");

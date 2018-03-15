@@ -108,19 +108,6 @@ var _select = Vue.component("fn-select",{
                     store.commit("setSelectedYear", self.selectedYear);
                 }
             })            
-        },
-        printreport: function () {
-            // var mywindow = window.open('', 'Data', 'height=800');
-            // mywindow.document.write('<html><head><title></title>');            
-            // mywindow.document.write('<style type="text/css">table {width:100%;border:1px solid lightgrey; font-size:9pt;} .totalcss {border-top: 1px solid #000; border-bottom: 4px double #000;} .totalcss th  {vertical-align: middle;} .noheader {display: none;} .netcss {border-top: 4px double #000; border-bottom: 4px double #000;} .netcss td{vertical-align: middle;font-weight: bold;} .neg{color: red;} h2{ text-align:left} td, th{ text-align:right; width:10%;} div.financeTitle h2{text-align: center; font-size: 1.2rem; font-weight: normal; margin-bottom: 0; text-transform: uppercase;} td:first-child, th:first-child{ text-align:left; width:40%;}</style>');
-            // mywindow.document.write('</head><body >');
-            // mywindow.document.write($("div#dvFinance").html());
-            // mywindow.document.write('</body></html>');
-
-            // mywindow.document.close();
-            // mywindow.focus();
-            // mywindow.print();
-            // mywindow.close();
         }
     },
     watch:{
@@ -183,13 +170,13 @@ var _rdata = Vue.component("att-report",{
                                 <span class="tdlable">Average Attendance for S.S.:</span>\
                             </td>\
                             <td>\
-                                <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="ssattendance" />\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter type="number" class="cssnum" v-model="ssattendance" :value="ssattendance"/>\
                             </td>\
                             <td>\
                                 <span class="tdlable">S.S. Offering for the month:</span>\
                             </td>\
                             <td>\
-                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="csscurrency" v-model="ssoffering" />\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="csscurrency" v-model="ssoffering" :value="ssoffering"/>\
                             </td>\
                         </tr>\
                         <tr>\
@@ -197,13 +184,13 @@ var _rdata = Vue.component("att-report",{
                                 <span class="tdlable">Average Attendance for YPE:</span>\
                             </td>\
                             <td>\
-                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="cssnum" v-model="ypeattendance" />\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="cssnum" v-model="ypeattendance" :value="ypeattendance" />\
                             </td>\
                             <td>\
                                 <span class="tdlable">YPE Offering for the month:</span>\
                             </td>\
                             <td>\
-                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="csscurrency" v-model="ypeoffering" />\
+                                <b-form-input size="sm" :formatter="below0" lazy-formatter  type="number" class="csscurrency" v-model="ypeoffering" :value="ypeoffering" />\
                             </td>\
                         </tr>\
                         <tr>\
@@ -451,11 +438,31 @@ var _rdata = Vue.component("att-report",{
                     <hr>\
                     <b-button size="sm" variant="secondary" @click="saveform" :disabled="changesnotmade">Save data</b-button>\
                     <b-button size="sm" variant="warning" @click="cleardata" :disabled="changesnotmade">Clear data</b-button>\
-                    <b-button v-if="saved" size="sm" variant="primary">Print report</b-button>\
-                    <b-button v-if="saved" size="sm" variant="outline-success">Copy data</b-button>\
+                    <b-button v-if="saved" size="sm" variant="primary" @click="printreport">Print report</b-button>\
+                    <b-button v-if="saved" size="sm" variant="outline-success" @click="copydata">Copy data</b-button>\
+                    <b-button v-if="saved" size="sm" variant="outline-secondary">Approve report</b-button>\
+                    <b-button v-if="saved" size="sm" variant="outline-warning">Email report</b-button>\
                     <b-button v-if="saved" size="sm" variant="outline-danger" @click="deletedata">Delete </b-button>\
                     <b-button size="sm" variant="outline-primary" @click="startover">Start over </b-button>\
                 </div>\
+                <b-modal title="Copy monthly attendance" v-model="show">\
+                    <p>Copy {{dte}} to:</p>\
+                    <div id="dvcopy">\
+                        <div>\
+                            <span>Select Month: </span>\
+                            <select v-model="selectedMonthCopy">\
+                                <option v-for="(mon, idx) in months" :value="idx">{{mon}}</option>\
+                            </select>\
+                        </div>\
+                        <div class="dvYear">\
+                            <span>Select Year: </span>\
+                            <select v-model="selectedYearCopy">\
+                                <option v-for="(yer, idx) in years" :value="yer">{{yer}}</option>\
+                            </select>\
+                        </div>\
+                    </div>\
+                    <b-button size="sm" variant="success" @click="copythedata" :disabled="notselected">OK</b-button>\
+                </b-modal>\
             </div>',
     data: function(){
         return{
@@ -493,10 +500,20 @@ var _rdata = Vue.component("att-report",{
             miscamount:0,
             hqamount:0,
             comments:"",
-            changesnotmade: true
+            changesnotmade: true,
+            selectedMonthCopy:"",
+            selectedYearCopy:"",
+            show: false,
+            notselected: true
         }
     },
     computed:{
+        months: function(){
+            return store.getters.getMonths;
+        },
+        years: function(){
+            return store.getters.getYears;
+        },
         selectedmonth: function () {
             return store.getters.getSelectedMonth;
         },
@@ -590,7 +607,13 @@ var _rdata = Vue.component("att-report",{
             return store.getters.getSavedReport;
         }
     },
+    filters:{
+        
+    },
     methods:{
+        // currency: function(payload, event){
+        //     return accounting.formatMoney(payload);
+        // },
         below0: function(value, event){
             var vl = value;
             if (value < 0)
@@ -600,6 +623,8 @@ var _rdata = Vue.component("att-report",{
             }
             else
                 this.changesnotmade = false;
+            // if (event.srcElement.className.indexOf("csscurrency") > -1)
+            //     return accounting.formatMoney(vl)
             return vl;
         },
         deletedata:function(){
@@ -702,86 +727,6 @@ var _rdata = Vue.component("att-report",{
                 this.changesnotmade = true;
             }            
         },
-        // submitform: function () {  
-        //     var tot = this.ssattendance +
-        //         this.ssoffering +
-        //         this.ypeattendance +
-        //         this.ypeoffering +
-        //         this.regattendance +
-        //         this.offering +
-        //         this.messages +
-        //         this.tithes +
-        //         this.bibleclass +
-        //         this.fasting +
-        //         this.homevisits +
-        //         this.streetservice +
-        //         this.revivalservice +
-        //         this.converts +
-        //         this.baptized +
-        //         this.added +
-        //         this.excommunicated +
-        //         this.membership +
-        //         this.mens +
-        //         this.womens +
-        //         this.youth +
-        //         this.mensoffering +
-        //         this.womensoffering +
-        //         this.youthoffering +
-        //         this.specialoffering +
-        //         this.rallyoffering +
-        //         this.pastoroffering +
-        //         this.mortgagamount +
-        //         this.rentamount +
-        //         this.utilitiesamount +
-        //         this.donationamout +
-        //         this.miscamount +
-        //         this.hqamount;
-
-        //     if (tot == 0)
-        //     {
-        //         alert("You have not completed the form. An empty form cannot be submitted")
-        //         this.changesnotmade = true;
-        //     }
-        //     else
-        //     {
-        //         if (this.newreport)
-        //         {
-        //             savedata(this.selectedmonth,this.selectedyear, this.ssattendance,
-        //             this.ssoffering,
-        //             this.ypeattendance,
-        //             this.ypeoffering,
-        //             this.regattendance,
-        //             this.offering,
-        //             this.messages,
-        //             this.tithes,
-        //             this.bibleclass,
-        //             this.fasting,
-        //             this.homevisits,
-        //             this.streetservice,
-        //             this.revivalservice,
-        //             this.converts,
-        //             this.baptized,
-        //             this.added,
-        //             this.excommunicated,
-        //             this.membership,
-        //             this.mens,
-        //             this.womens,
-        //             this.youth,
-        //             this.mensoffering,
-        //             this.womensoffering,
-        //             this.youthoffering,
-        //             this.specialoffering,
-        //             this.rallyoffering,
-        //             this.pastoroffering,
-        //             this.mortgagamount,
-        //             this.rentamount,
-        //             this.utilitiesamount,
-        //             this.donationamout,
-        //             this.miscamount,
-        //             this.hqamount, this.comments,"Yes");
-        //         }
-        //     }
-        // },
         saveform: function(){
             var tot = this.ssattendance +
                 this.ssoffering +
@@ -897,6 +842,98 @@ var _rdata = Vue.component("att-report",{
                     this.hqamount, this.comments,"No");
                 }
             }
+        },
+        copydata:function(){
+            this.selectedMonthCopy = "";
+            this.selectedYearCopy = "";
+            this.show = true;
+        },
+        copythedata:function(){
+            var self = this;
+            if (this.selectedMonthCopy == store.getters.getSelectedMonth && this.selectedYearCopy == store.getters.getSelectedYear)
+            {
+                alert("Record cannot be copied to itself")
+                return false;
+            }
+            else
+            {
+                axios.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')/items?$filter=Month eq " + this.selectedMonthCopy + " and Year eq " + this.selectedYearCopy,{
+                    headers: { "accept": "application/json;odata=verbose" }
+                })
+                .then(function(response){
+                    if (response.data.d.results.length > 0)
+                        alert("Record already exists");
+                    else
+                    {
+                        savedata(self.selectedMonthCopy,self.selectedYearCopy, self.ssattendance,
+                            self.ssoffering,
+                            self.ypeattendance,
+                            self.ypeoffering,
+                            self.regattendance,
+                            self.offering,
+                            self.messages,
+                            self.tithes,
+                            self.bibleclass,
+                            self.fasting,
+                            self.homevisits,
+                            self.streetservice,
+                            self.revivalservice,
+                            self.converts,
+                            self.baptized,
+                            self.added,
+                            self.excommunicated,
+                            self.membership,
+                            self.mens,
+                            self.womens,
+                            self.youth,
+                            self.mensoffering,
+                            self.womensoffering,
+                            self.youthoffering,
+                            self.specialoffering,
+                            self.rallyoffering,
+                            self.pastoroffering,
+                            self.mortgagamount,
+                            self.rentamount,
+                            self.utilitiesamount,
+                            self.donationamout,
+                            self.miscamount,
+                            self.hqamount, self.comments,"Copy");
+                    }
+                })
+            }
+        },
+        printreport: function () {
+            var mywindow = window.open('', 'Data', 'height=800');
+            mywindow.document.write('<html><head><title></title>');            
+            mywindow.document.write('<style type="text/css">table {width:100%;border:1px solid lightgrey; font-size:9pt;} .btn {display: none;} .netcss {border-top: 4px double #000; border-bottom: 4px double #000;}   h2{text-align: center; font-size: 1.2rem; font-weight: normal; margin-bottom: 0; text-transform: uppercase;} .cssnum, .csscurrency{text-align:right;} </style>');
+            mywindow.document.write('</head><body >');
+            var dt = $("div#reportcss").html();
+            $(dt).find("input.cssnum").each(function(idx, item){
+                item.value = accounting.formatMoney(item.value);
+            })
+            //mywindow.document.write($("div#reportcss").html());
+            mywindow.document.write(dt);
+
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close();
+            mywindow.focus();
+            mywindow.print();
+            mywindow.close();
+        }
+    },
+    watch:{
+        selectedMonthCopy: function(){
+            if (this.selectedMonthCopy > 0 && this.selectedYearCopy > 0)
+                this.notselected = false;
+            else
+                this.notselected = true;
+        },
+        selectedYearCopy: function(){
+            if (this.selectedMonthCopy > 0 && this.selectedYearCopy > 0)
+                this.notselected = false;
+            else
+                this.notselected = true;
         }
     },
     updated: function(){
