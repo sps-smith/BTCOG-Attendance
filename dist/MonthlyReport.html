@@ -1,826 +1,865 @@
 <style type="text/css">
-div.selectreport table, div.reportData table
-{
+  div.selectreport table,
+  div.reportData table {
     border-collapse: separate;
     border-spacing: 5px;
-}
-.tdlable
-{
+  }
+  .tdlable {
     font-weight: bold;
     white-space: nowrap;
-}
-div.reportData
-{
-    display:none;
-}
-h1.reporttitle, h1.reportinfo
-{
+  }
+  div.reportData {
+    display: none;
+  }
+  h1.reporttitle,
+  h1.reportinfo {
     text-align: center;
-}
-.ms-webpartPage-root
-{
+  }
+  .ms-webpartPage-root {
     border-spacing: 10px;
-}
+  }
 </style>
 
 <div class="selectreport">
-    <h1 class="reporttitle">Monthly Attendance Report</h1>
-        <table width="100%">
-            <tr>
-                <td>Select Month:</td>
-                <td>
-                    <select class="monthsl">
-                        <option value="1" selected="selected">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                </td>
-                <td>Select Year:</td>
-                <td>
-                    <select class="yearsl">
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017" selected="selected">2017</option>
-                        <option value="2016">2016</option>
-                    </select>
-                </td>
-                <td>
-                    <input type="button" value="Get Report" onclick="loadReport('','')" />
-                    <input type="button" value="New Report" onclick="showData('')" />
-                </td>
-            </tr>
-        </table>
+  <h1 class="reporttitle">Monthly Attendance Report</h1>
+  <table width="100%">
+    <tr>
+      <td>Select Month:</td>
+      <td>
+        <select class="monthsl">
+          <option value="1" selected="selected">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+      </td>
+      <td>Select Year:</td>
+      <td>
+        <select class="yearsl">
+          <option value="2020">2020</option>
+          <option value="2019">2019</option>
+          <option value="2018">2018</option>
+          <option value="2017" selected="selected">2017</option>
+          <option value="2016">2016</option>
+        </select>
+      </td>
+      <td>
+        <input type="button" value="Get Report" onclick="loadReport('','')" />
+        <input type="button" value="New Report" onclick="showData('')" />
+      </td>
+    </tr>
+  </table>
 </div>
 <div class="reportData">
-   
-        <h1 class="reporttitle">Monthly Attendance Report</h1>
-        <h1 class="reportinfo"></h1>
-        <table width="100%">
-            <tr>
-                <td>
-                    <span class="tdlable">Name of Church:</span>
-                </td>
-                <td>
-                    Brampton Triumphant Church of God
-                </td>
-                <td>
-                    <span class="tdlable">Name of Pastor:</span>
-                </td>
-                <td>
-                    John Walker
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="tdlable">Church Address:</span>
-                </td>
-                <td>
-                    28 Westwyn Court, Unit 7 <br>Brampton, Ontario L6T 4T5
-                </td>
-                <td>
-                    <span class="tdlable">Pastor Address:</span>
-                </td>
-                <td>
-                    28 Westwyn Court, Unit 7 <br>Brampton, Ontario L6T 4T5
-                </td>
-            </tr>
-        </table>
-        <hr>
-        <table width="100%">
-            <tr>
-                <td>
-                    <span class="tdlable">Average Attendance for S.S.:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum ssattendance" />
-                </td>
-                <td>
-                    <span class="tdlable">S.S. Offering for the month:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency ssoffering" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="tdlable">Average Attendance for YPE:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum ypeattendance" />
-                </td>
-                <td>
-                    <span class="tdlable">YPE Offering for the month:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency ypeoffering" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="tdlable">Average Attendance - regular service:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum regattendance" />
-                </td>
-                <td>
-                    <span class="tdlable">Offering for the month:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency offering" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="tdlable">No. of messages preached:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum messages" />
-                </td>
-                <td>
-                    <span class="tdlable">Tithes for the month:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency tithes" />
-                </td>
-            </tr>
-        </table>
-        <table width="100%">
-            <tr>
-                <td>
-                    <span class="tdlable">No. of Bible class:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum bibleclass" />
-                </td>
-                <td>
-                    <span class="tdlable">No. of fasting:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum fasting" />
-                </td>
-                <td>
-                    <span class="tdlable">No. of home visits:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum homevisits" />
-                </td>
-            </tr>
-        </table>
-        <table width="100%">
-            <tr>
-                <td>
-                    <span class="tdlable">No. of street services:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum streetservice" />
-                </td>
-                <td>
-                    <span class="tdlable">No. of revival services:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum revivalservice" />
-                </td>
-            </tr>
-        </table>
-        <table width="100%">
-            <tr>
-                <td>
-                    <span class="tdlable">No. of converts:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum converts" />
-                </td>
-                <td>
-                    <span class="tdlable">No. of people baptized:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum baptized" />
-                </td>
-                <td>
-                    <span class="tdlable">No. added to the church:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum added" />
-                </td>
-            </tr>
-        </table>
-        <table width="100%">
-            <tr>
-                <td>
-                    <span class="tdlable">No. excommunicated from the church:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum excommunicated" />
-                </td>
-                <td>
-                    <span class="tdlable">Total membership:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum membership" />
-                </td>
-            </tr>
-        </table>
-        <table width="100%">
-            <tr>
-                <td>
-                    <span class="tdlable">No. of men's services:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum mens" />
-                </td>
-                <td>
-                    <span class="tdlable">No. of women's services:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum womens" />
-                </td>
-                <td>
-                    <span class="tdlable">No. of youth services:</span>
-                </td>
-                <td>
-                    <input type="text" class="cssnum youth" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="tdlable">Men's offering:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency mensoffering" />
-                </td>
-                <td>
-                    <span class="tdlable">Women's offering:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency womensoffering" />
-                </td>
-                <td>
-                    <span class="tdlable">Youth offering:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency youthoffering" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="tdlable">Special offering:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency specialoffering" />
-                </td>
-                <td>
-                    <span class="tdlable">Rally offering:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency rallyoffering" />
-                </td>
-                <td>
-                    <span class="tdlable">Pastor's' offering:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency pastoroffering" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="tdlable">Amount paid mortgage:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency mortgagamount" />
-                </td>
-                <td>
-                    <span class="tdlable">Rent paid:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency rentamount" />
-                </td>
-                <td>
-                    <span class="tdlable">Utilities:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency utilitiesamount" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="tdlable">Donations given:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency donationamout" /><br>
-                    (e.g. visiting minister)
-                </td>
-                <td>
-                    <span class="tdlable">Misc. expenses:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency miscamount" />
-                </td>
-                <td>
-                    <span class="tdlable">Amt. sent H.Q.:</span>
-                </td>
-                <td>
-                    <input type="text" class="csscurrency hqamount" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="tdlable">Comments:</span>
-                </td>
-                <td colspan="5">
-                    <textarea rows="4" cols="150" class="csstext comments" ></textarea>
-                </td>
-            </tr>
-        </table>
-        <div class="submitted">
-        <table>
-            <tr>
-                <td  class="tdlable">Submitted By:</td><td><input type="text" placeholder="Enter submitter name" class="txtSubmitter" /></td><td><input type="button" class="submitButton" value="Submit" onclick="submitData()" /></td>
-            </tr>
-        </table>
-        </div>
-        <div class="approval">
-        <table>
-            <tr>
-                <td  class="tdlable">Approved By:</td><td><input type="text" placeholder="Enter approver name" class="txtApprover" /></td><td><input type="button" class="approveButton" value="Approved" onclick="approveData()" /></td>
-            </tr>
-        </table>
-        </div>
-    <hr>
-    <div class="dvButtons">
-        <input type="button" value="Save" onclick="saveData('Not Sure')" /><input type="button" value="Clear data" onclick="clearData()" /><input type="button" value="print report" onclick="printReport()" />
-    </div>
-    <input type="hidden" class="hidSubmitted" />
+  <h1 class="reporttitle">Monthly Attendance Report</h1>
+  <h1 class="reportinfo"></h1>
+  <table width="100%">
+    <tr>
+      <td>
+        <span class="tdlable">Name of Church:</span>
+      </td>
+      <td>Brampton Triumphant Church of God</td>
+      <td>
+        <span class="tdlable">Name of Pastor:</span>
+      </td>
+      <td>John Walker</td>
+    </tr>
+    <tr>
+      <td>
+        <span class="tdlable">Church Address:</span>
+      </td>
+      <td>28 Westwyn Court, Unit 7 <br />Brampton, Ontario L6T 4T5</td>
+      <td>
+        <span class="tdlable">Pastor Address:</span>
+      </td>
+      <td>28 Westwyn Court, Unit 7 <br />Brampton, Ontario L6T 4T5</td>
+    </tr>
+  </table>
+  <hr />
+  <table width="100%">
+    <tr>
+      <td>
+        <span class="tdlable">Average Attendance for S.S.:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum ssattendance" />
+      </td>
+      <td>
+        <span class="tdlable">S.S. Offering for the month:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency ssoffering" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="tdlable">Average Attendance for YPE:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum ypeattendance" />
+      </td>
+      <td>
+        <span class="tdlable">YPE Offering for the month:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency ypeoffering" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="tdlable">Average Attendance - regular service:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum regattendance" />
+      </td>
+      <td>
+        <span class="tdlable">Offering for the month:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency offering" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="tdlable">No. of messages preached:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum messages" />
+      </td>
+      <td>
+        <span class="tdlable">Tithes for the month:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency tithes" />
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr>
+      <td>
+        <span class="tdlable">No. of Bible class:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum bibleclass" />
+      </td>
+      <td>
+        <span class="tdlable">No. of fasting:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum fasting" />
+      </td>
+      <td>
+        <span class="tdlable">No. of home visits:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum homevisits" />
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr>
+      <td>
+        <span class="tdlable">No. of street services:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum streetservice" />
+      </td>
+      <td>
+        <span class="tdlable">No. of revival services:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum revivalservice" />
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr>
+      <td>
+        <span class="tdlable">No. of converts:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum converts" />
+      </td>
+      <td>
+        <span class="tdlable">No. of people baptized:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum baptized" />
+      </td>
+      <td>
+        <span class="tdlable">No. added to the church:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum added" />
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr>
+      <td>
+        <span class="tdlable">No. excommunicated from the church:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum excommunicated" />
+      </td>
+      <td>
+        <span class="tdlable">Total membership:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum membership" />
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr>
+      <td>
+        <span class="tdlable">No. of men's services:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum mens" />
+      </td>
+      <td>
+        <span class="tdlable">No. of women's services:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum womens" />
+      </td>
+      <td>
+        <span class="tdlable">No. of youth services:</span>
+      </td>
+      <td>
+        <input type="text" class="cssnum youth" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="tdlable">Men's offering:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency mensoffering" />
+      </td>
+      <td>
+        <span class="tdlable">Women's offering:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency womensoffering" />
+      </td>
+      <td>
+        <span class="tdlable">Youth offering:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency youthoffering" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="tdlable">Special offering:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency specialoffering" />
+      </td>
+      <td>
+        <span class="tdlable">Rally offering:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency rallyoffering" />
+      </td>
+      <td>
+        <span class="tdlable">Pastor's' offering:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency pastoroffering" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="tdlable">Amount paid mortgage:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency mortgagamount" />
+      </td>
+      <td>
+        <span class="tdlable">Rent paid:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency rentamount" />
+      </td>
+      <td>
+        <span class="tdlable">Utilities:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency utilitiesamount" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="tdlable">Donations given:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency donationamout" /><br />
+        (e.g. visiting minister)
+      </td>
+      <td>
+        <span class="tdlable">Misc. expenses:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency miscamount" />
+      </td>
+      <td>
+        <span class="tdlable">Amt. sent H.Q.:</span>
+      </td>
+      <td>
+        <input type="text" class="csscurrency hqamount" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="tdlable">Comments:</span>
+      </td>
+      <td colspan="5">
+        <textarea rows="4" cols="150" class="csstext comments"></textarea>
+      </td>
+    </tr>
+  </table>
+  <div class="submitted">
+    <table>
+      <tr>
+        <td class="tdlable">Submitted By:</td>
+        <td>
+          <input
+            type="text"
+            placeholder="Enter submitter name"
+            class="txtSubmitter"
+          />
+        </td>
+        <td>
+          <input
+            type="button"
+            class="submitButton"
+            value="Submit"
+            onclick="submitData()"
+          />
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="approval">
+    <table>
+      <tr>
+        <td class="tdlable">Approved By:</td>
+        <td>
+          <input
+            type="text"
+            placeholder="Enter approver name"
+            class="txtApprover"
+          />
+        </td>
+        <td>
+          <input
+            type="button"
+            class="approveButton"
+            value="Approved"
+            onclick="approveData()"
+          />
+        </td>
+      </tr>
+    </table>
+  </div>
+  <hr />
+  <div class="dvButtons">
+    <input type="button" value="Save" onclick="saveData('Not Sure')" /><input
+      type="button"
+      value="Clear data"
+      onclick="clearData()"
+    /><input type="button" value="print report" onclick="printReport()" />
+  </div>
+  <input type="hidden" class="hidSubmitted" />
 </div>
- <div id="printData">
- </div>
+<div id="printData"></div>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script  src="http://btcog.ca/fn/siteassets/financial/accounting.js"></script>
-<script  src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<script src="http://btcog.ca/fn/siteassets/financial/accounting.js"></script>
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <link href="https://printjs-4de6.kxcdn.com/print.min.css" rel="stylesheet" />
 <script type="text/javascript">
-    var monthNames = ["","January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-    ];
-    var gblFound = false;
-    var recordID = null;
-    var RecordSaved = false;
-    var qry = getParameterByName("year"); 
-    var qry1 = getParameterByName("month"); 
-    var _approver = false;
-    (function(){
-        if (qry != "" && qry1 != "")
-        {
-            loadReport(qry1,qry);
-            _approver = true;
-            $("div#s4-titlerow").hide();
-            $("div#sideNavBox").hide();
-            $("div#contentBox").css("margin-left","0");
-        }
-    })();
-    $(document).ready(function() {
-        $("div.selectreport select").change(function() {
-            var tx = $(this).val();
-            $(this).find("option").removeAttr("selected");
-            $(this).find("option").each(function() {
-                if ($(this).val() == tx)
-                {
-                    $(this).prop("selected",true);
-                    $(this).attr("selected","selected");
-                    return false;
-                }
-            });
-        });        
-    });
-
-function setValue(vl)
-{
-    if ($(vl).attr("class") != undefined)
-    {
-        var cs = $(vl).attr("class").split(" ")[1];
-        var valu = $("div.reportData").find("input." + cs).val();
-        $(vl).val(valu);
+  var monthNames = [
+    "",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  var gblFound = false;
+  var recordID = null;
+  var RecordSaved = false;
+  var qry = getParameterByName("year");
+  var qry1 = getParameterByName("month");
+  var _approver = false;
+  (function () {
+    if (qry != "" && qry1 != "") {
+      loadReport(qry1, qry);
+      _approver = true;
+      $("div#s4-titlerow").hide();
+      $("div#sideNavBox").hide();
+      $("div#contentBox").css("margin-left", "0");
     }
-}
+  })();
+  $(document).ready(function () {
+    $("div.selectreport select").change(function () {
+      var tx = $(this).val();
+      $(this).find("option").removeAttr("selected");
+      $(this)
+        .find("option")
+        .each(function () {
+          if ($(this).val() == tx) {
+            $(this).prop("selected", true);
+            $(this).attr("selected", "selected");
+            return false;
+          }
+        });
+    });
+  });
 
-function stripHTML(text){
-   var regex = /(<([^>]+)>)/ig;
-   return text.replace(regex, "");
-}
+  function setValue(vl) {
+    if ($(vl).attr("class") != undefined) {
+      var cs = $(vl).attr("class").split(" ")[1];
+      var valu = $("div.reportData")
+        .find("input." + cs)
+        .val();
+      $(vl).val(valu);
+    }
+  }
 
-function printReport()
-{
+  function stripHTML(text) {
+    var regex = /(<([^>]+)>)/gi;
+    return text.replace(regex, "");
+  }
+
+  function printReport() {
     $("div#printData").html("");
     $("div#printData").append($("div.reportData").html());
-    $("div#printData input").each(function() {
-        setValue($(this));
+    $("div#printData input").each(function () {
+      setValue($(this));
     });
     $("div#printData textarea").val($("div.reportData textarea").val());
-    $("div#printData .txtSubmitter").val($("div.reportData .txtSubmitter").val());
+    $("div#printData .txtSubmitter").val(
+      $("div.reportData .txtSubmitter").val()
+    );
     $("div#printData .txtApprover").val($("div.reportData .txtApprover").val());
-    $("div#printData .cssnum").css("text-align","right");
-    $("div#printData .cssnum").css("color","blue");
-    $("div#printData .cssnum").prop("disabled",true);
-    $("div#printData textarea").prop("disabled",true);
-    $("div#printData .txtSubmitter").prop("disabled",true);
-    $("div#printData .txtApprover").prop("disabled",true);
+    $("div#printData .cssnum").css("text-align", "right");
+    $("div#printData .cssnum").css("color", "blue");
+    $("div#printData .cssnum").prop("disabled", true);
+    $("div#printData textarea").prop("disabled", true);
+    $("div#printData .txtSubmitter").prop("disabled", true);
+    $("div#printData .txtApprover").prop("disabled", true);
     $("div#printData .submitButton").hide();
     $("div#printData div.approval").hide();
     $("div#printData div.submitted").hide();
-    $("div#printData .csscurrency").each(function(){
-        $(this).val(accounting.formatMoney($(this).val()));
-        $(this).css("text-align","right");
-        $(this).css("color","blue");
-        $(this).prop("disabled",true);
-    });            
-    $("div#printData").append("<table width='100%'><tr><td><img src='../siteassets/signatures/phil_signature.png' width='300px'/></td><td><img src='../siteassets/signatures/phil_signature.png'  width='300px'/></td></tr>" + 
-        "<tr><td><h2>Secrectary: Georgia Pryce</h2></td><td><h2>Senior Pastor: John Walker</h2></td></tr></table>");
+    $("div#printData .csscurrency").each(function () {
+      $(this).val(accounting.formatMoney($(this).val()));
+      $(this).css("text-align", "right");
+      $(this).css("color", "blue");
+      $(this).prop("disabled", true);
+    });
+    // $("div#printData").append("<table width='100%'><tr><td><img src='../siteassets/signatures/phil_signature.png' width='300px'/></td><td><img src='../siteassets/signatures/phil_signature.png'  width='300px'/></td></tr>" +
+    //     "<tr><td><h2>Secrectary: Georgia Pryce</h2></td><td><h2>Senior Pastor: John Walker</h2></td></tr></table>");
+    $("div#printData").append(
+      "<table width='100%'><tr><td></td><td></td></tr>" +
+        "<tr><td><h2>Secrectary: Georgia Pryce</h2></td><td><h2>Senior Pastor: John Walker</h2></td></tr></table>"
+    );
     $("div#printData .approveButton").hide();
     $("div#printData .dvButtons").hide();
     $("div#s4-titlerow").hide();
     $("div#sideNavBox").hide();
-    $("div#contentBox").css("margin-left","0");
+    $("div#contentBox").css("margin-left", "0");
     $("div.reportData").hide();
+  }
 
-}
+  function loadReport(mon, yer) {
+    if (mon == "") mon = $("select.monthsl").val();
 
-function loadReport(mon, yer)
-{
-    if (mon == "")
-        mon = $("select.monthsl").val();
+    if (yer == "") yer = $("select.yearsl").val();
 
-    if (yer == "")
-        yer = $("select.yearsl").val();
-
-     $.ajax({
-        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')/items?$filter=Month eq " + mon + " and Year eq " + yer,
-        method: "GET",
-        headers: { "accept": "application/json;odata=verbose" },
-        success: function (data) {
-            if (data.d.results.length > 0)
-            {
-                recordID = data.d.results[0].ID;
-                showData(data.d.results[0]);
-                gblFound = true;
-            }
-            else
-            {
-                if (qry == "" && qry1 == "")
-                {
-                    alert("No data found for your selection. A blank form will be loaded");
-                    showData("");
-                }
-                else
-                {
-                    $("div.selectreport").hide();
-                    $("div.reportData").hide();
-                    alert("No data found. Please contact the Deacon Phil");
-                }
-            }
-        },
-        error: function(data)
-        {
-            
+    $.ajax({
+      url:
+        _spPageContextInfo.webAbsoluteUrl +
+        "/_api/web/lists/getbytitle('Monthly Reports')/items?$filter=Month eq " +
+        mon +
+        " and Year eq " +
+        yer,
+      method: "GET",
+      headers: { accept: "application/json;odata=verbose" },
+      success: function (data) {
+        if (data.d.results.length > 0) {
+          recordID = data.d.results[0].ID;
+          showData(data.d.results[0]);
+          gblFound = true;
+        } else {
+          if (qry == "" && qry1 == "") {
+            alert(
+              "No data found for your selection. A blank form will be loaded"
+            );
+            showData("");
+          } else {
+            $("div.selectreport").hide();
+            $("div.reportData").hide();
+            alert("No data found. Please contact the Deacon Phil");
+          }
         }
+      },
+      error: function (data) {},
     });
-}
+  }
 
-function showData(dta)
-{
-    $("h1.reportinfo").html("for " + monthNames[$("select.monthsl").val()] + " " + $("select.yearsl").val());
+  function showData(dta) {
+    $("h1.reportinfo").html(
+      "for " +
+        monthNames[$("select.monthsl").val()] +
+        " " +
+        $("select.yearsl").val()
+    );
     $("div.selectreport").hide();
-    if (dta == "")
-        $("div.reportData").show();
-    else
-    {
-        $("input.ssattendance").val(dta.AverageSS);
-        $("input.ssoffering").val(dta.SSOffering);
-        $("input.ypeattendance").val(dta.AverageYPE);
-        $("input.ypeoffering").val(dta.YPEOffering);
+    if (dta == "") $("div.reportData").show();
+    else {
+      $("input.ssattendance").val(dta.AverageSS);
+      $("input.ssoffering").val(dta.SSOffering);
+      $("input.ypeattendance").val(dta.AverageYPE);
+      $("input.ypeoffering").val(dta.YPEOffering);
 
-        $("input.regattendance").val(dta.AverageRegularService);
-        $("input.offering").val(dta.MonthOffering);
-        $("input.messages").val(dta.Preached);
-        $("input.tithes").val(dta.MonthTithes);
+      $("input.regattendance").val(dta.AverageRegularService);
+      $("input.offering").val(dta.MonthOffering);
+      $("input.messages").val(dta.Preached);
+      $("input.tithes").val(dta.MonthTithes);
 
-        $("input.bibleclass").val(dta.BibleClass);
-        $("input.fasting").val(dta.Fasting);
-        $("input.homevisits").val(dta.HomeVisits);
+      $("input.bibleclass").val(dta.BibleClass);
+      $("input.fasting").val(dta.Fasting);
+      $("input.homevisits").val(dta.HomeVisits);
 
-        $("input.streetservice").val(dta.StreetServices);
-        $("input.revivalservice").val(dta.RevivalServices);
-        $("input.converts").val(dta.Converts);
-        $("input.baptized").val(dta.Baptized);
+      $("input.streetservice").val(dta.StreetServices);
+      $("input.revivalservice").val(dta.RevivalServices);
+      $("input.converts").val(dta.Converts);
+      $("input.baptized").val(dta.Baptized);
 
-        $("input.added").val(dta.NewMembers);
-        $("input.excommunicated").val(dta.Excommunicated);
-        $("input.membership").val(dta.TotalMembers);
-        $("input.mens").val(dta.MenServices);
+      $("input.added").val(dta.NewMembers);
+      $("input.excommunicated").val(dta.Excommunicated);
+      $("input.membership").val(dta.TotalMembers);
+      $("input.mens").val(dta.MenServices);
 
-        $("input.womens").val(dta.WomenServices);
-        $("input.youth").val(dta.YouthServices);
-        $("input.mensoffering").val(dta.MensOffering);
-        $("input.womensoffering").val(dta.WomensOffering);
-        $("input.youthoffering").val(dta.YouthOffering);
+      $("input.womens").val(dta.WomenServices);
+      $("input.youth").val(dta.YouthServices);
+      $("input.mensoffering").val(dta.MensOffering);
+      $("input.womensoffering").val(dta.WomensOffering);
+      $("input.youthoffering").val(dta.YouthOffering);
 
-        $("input.specialoffering").val(dta.SpecialOffering);
-        $("input.rallyoffering").val(dta.RallyOffering);
-        $("input.pastoroffering").val(dta.PastorExpenses);
-        $("input.mortgagamount").val(dta.Mortgage);
-        $("input.rentamount").val(dta.Rent);
-        $("input.utilitiesamount").val(dta.Utilities);
+      $("input.specialoffering").val(dta.SpecialOffering);
+      $("input.rallyoffering").val(dta.RallyOffering);
+      $("input.pastoroffering").val(dta.PastorExpenses);
+      $("input.mortgagamount").val(dta.Mortgage);
+      $("input.rentamount").val(dta.Rent);
+      $("input.utilitiesamount").val(dta.Utilities);
 
-        $("input.donationamout").val(dta.Donations);
-        $("input.miscamount").val(dta.MiscExpenses);
-        $("input.hqamount").val(dta.HQAmount);
-        $("textarea.comments").val(stripHTML(dta.Comments));
-        $("input.txtSubmitter").val(dta.SubmittedBy);
-        $("input.txtApprover").val(dta.ApprovedBy); 
-        $("input.hidSubmitted").val(dta.Submitted);
-        $("input.txtApprover").prop("enabled",false);
-        $(".approveButton").hide();
-        $("div.reportData").show();
-        if (_approver)
-        {
-            $(".cssnum").css("text-align","right");
-            $(".cssnum").css("color","blue");
-            $(".cssnum").prop("disabled",true);
-            $("textarea").prop("disabled",true);
-            $(".txtSubmitter").prop("disabled",true);
-            $(".submitButton").hide();
-            $(".csscurrency").each(function(){
-                $(this).val(accounting.formatMoney($(this).val()));
-                $(this).css("text-align","right");
-                $(this).css("color","blue");
-                $(this).prop("disabled",true);
-            });            
-            $(".approveButton").show();
-            $(".dvButtons").hide();
-            if (qry != "" && qry1 != "")
-            {
-                var hd = setInterval(function(){
-                    if ($("div#s4-titlerow").is(":visible"))
-                    {
-                        $("div#s4-titlerow").hide();
-                        clearInterval(hd);
-                    }
-                },1000);
+      $("input.donationamout").val(dta.Donations);
+      $("input.miscamount").val(dta.MiscExpenses);
+      $("input.hqamount").val(dta.HQAmount);
+      $("textarea.comments").val(stripHTML(dta.Comments));
+      $("input.txtSubmitter").val(dta.SubmittedBy);
+      $("input.txtApprover").val(dta.ApprovedBy);
+      $("input.hidSubmitted").val(dta.Submitted);
+      $("input.txtApprover").prop("enabled", false);
+      $(".approveButton").hide();
+      $("div.reportData").show();
+      if (_approver) {
+        $(".cssnum").css("text-align", "right");
+        $(".cssnum").css("color", "blue");
+        $(".cssnum").prop("disabled", true);
+        $("textarea").prop("disabled", true);
+        $(".txtSubmitter").prop("disabled", true);
+        $(".submitButton").hide();
+        $(".csscurrency").each(function () {
+          $(this).val(accounting.formatMoney($(this).val()));
+          $(this).css("text-align", "right");
+          $(this).css("color", "blue");
+          $(this).prop("disabled", true);
+        });
+        $(".approveButton").show();
+        $(".dvButtons").hide();
+        if (qry != "" && qry1 != "") {
+          var hd = setInterval(function () {
+            if ($("div#s4-titlerow").is(":visible")) {
+              $("div#s4-titlerow").hide();
+              clearInterval(hd);
             }
+          }, 1000);
         }
+      }
     }
-}
+  }
 
-function saveData(vl)
-{
+  function saveData(vl) {
     RecordSaved = false;
     var _entity, item;
-    $.ajax({		
-		url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')?$select=ListItemEntityTypeFullName",
-		method: "GET",
-		headers: { "Accept": "application/json; odata=verbose" },
-		success: function (response)
-		{
-			 _entity = response.d.ListItemEntityTypeFullName;
+    $.ajax({
+      url:
+        _spPageContextInfo.webAbsoluteUrl +
+        "/_api/web/lists/getbytitle('Monthly Reports')?$select=ListItemEntityTypeFullName",
+      method: "GET",
+      headers: { Accept: "application/json; odata=verbose" },
+      success: function (response) {
+        _entity = response.d.ListItemEntityTypeFullName;
 
-             item = {
-                "__metadata": { "type": _entity}};	
-                item["Month"] = Number($("select.monthsl").val());
-                item["Year"] = Number($("select.yearsl").val());
-                item["AverageSS"] = Number($("input.ssattendance").val());
-                item["SSOffering"] = Number($("input.ssoffering").val());
-                item["AverageYPE"] = Number($("input.ypeattendance").val());
-                item["YPEOffering"] =  Number($("input.ypeoffering").val());
-                item["AverageRegularService"] = Number($("input.regattendance").val());
-                item["MonthOffering"] = Number($("input.offering").val());
-                item["Preached"] = Number($("input.messages").val());
-                item["MonthTithes"] = Number($("input.tithes").val());
-                item["BibleClass"] = Number($("input.bibleclass").val());
-                item["Fasting"] =  Number($("input.fasting").val());
-                item["HomeVisits"] = Number($("input.homevisits").val());
-                item["StreetServices"] = Number($("input.streetservice").val());
-                item["RevivalServices"] = Number($("input.revivalservice").val());
-                item["Converts"] = Number($("input.converts").val());
-                item["Baptized"] = Number($("input.baptized").val());
-                item["NewMembers"] = Number($("input.added").val());
-                item["Excommunicated"] = Number($("input.excommunicated").val());
-                item["TotalMembers"] = Number($("input.membership").val());
-                item["MenServices"] = Number($("input.mens").val());
-                item["WomenServices"] = Number($("input.womens").val());
-                item["YouthServices"] = Number($("input.youth").val());
-                item["MensOffering"] = Number($("input.mensoffering").val());
-                item["WomensOffering"] = Number($("input.womensoffering").val());
-                item["YouthOffering"] = Number($("input.youthoffering").val());
-                item["SpecialOffering"] = Number($("input.specialoffering").val());
-                item["RallyOffering"] = Number($("input.rallyoffering").val());
-                item["PastorExpenses"] = Number($("input.pastoroffering").val());
-                item["Mortgage"] = Number($("input.mortgagamount").val());
-                item["Rent"] = Number($("input.rentamount").val());
-                item["Utilities"] = Number($("input.utilitiesamount").val());
-                item["Donations"] = Number($("input.donationamout").val());	
-                item["MiscExpenses"] = Number($("input.miscamount").val());
-                item["HQAmount"] = Number($("input.hqamount").val());
-                item["Comments"] = $("textarea.comments").val();
-                item["SubmittedBy"] = $("input.txtSubmitter").val();
-                item["ApprovedBy"] = $("input.txtApprover").val();
-                item["Submitted"] = $("input.hidSubmitted").val();
-                if (vl == "Yes")
-                {
-                    item["Submitted"] = "Yes";
-                    $("input.hidSubmitted").val("Yes");
-                }
-                if (_approver)
-                    item["Approved"] = "Yes"
-                
-        },
-        error: function(data)
-        {
+        item = {
+          __metadata: { type: _entity },
+        };
+        item["Month"] = Number($("select.monthsl").val());
+        item["Year"] = Number($("select.yearsl").val());
+        item["AverageSS"] = Number($("input.ssattendance").val());
+        item["SSOffering"] = Number($("input.ssoffering").val());
+        item["AverageYPE"] = Number($("input.ypeattendance").val());
+        item["YPEOffering"] = Number($("input.ypeoffering").val());
+        item["AverageRegularService"] = Number($("input.regattendance").val());
+        item["MonthOffering"] = Number($("input.offering").val());
+        item["Preached"] = Number($("input.messages").val());
+        item["MonthTithes"] = Number($("input.tithes").val());
+        item["BibleClass"] = Number($("input.bibleclass").val());
+        item["Fasting"] = Number($("input.fasting").val());
+        item["HomeVisits"] = Number($("input.homevisits").val());
+        item["StreetServices"] = Number($("input.streetservice").val());
+        item["RevivalServices"] = Number($("input.revivalservice").val());
+        item["Converts"] = Number($("input.converts").val());
+        item["Baptized"] = Number($("input.baptized").val());
+        item["NewMembers"] = Number($("input.added").val());
+        item["Excommunicated"] = Number($("input.excommunicated").val());
+        item["TotalMembers"] = Number($("input.membership").val());
+        item["MenServices"] = Number($("input.mens").val());
+        item["WomenServices"] = Number($("input.womens").val());
+        item["YouthServices"] = Number($("input.youth").val());
+        item["MensOffering"] = Number($("input.mensoffering").val());
+        item["WomensOffering"] = Number($("input.womensoffering").val());
+        item["YouthOffering"] = Number($("input.youthoffering").val());
+        item["SpecialOffering"] = Number($("input.specialoffering").val());
+        item["RallyOffering"] = Number($("input.rallyoffering").val());
+        item["PastorExpenses"] = Number($("input.pastoroffering").val());
+        item["Mortgage"] = Number($("input.mortgagamount").val());
+        item["Rent"] = Number($("input.rentamount").val());
+        item["Utilities"] = Number($("input.utilitiesamount").val());
+        item["Donations"] = Number($("input.donationamout").val());
+        item["MiscExpenses"] = Number($("input.miscamount").val());
+        item["HQAmount"] = Number($("input.hqamount").val());
+        item["Comments"] = $("textarea.comments").val();
+        item["SubmittedBy"] = $("input.txtSubmitter").val();
+        item["ApprovedBy"] = $("input.txtApprover").val();
+        item["Submitted"] = $("input.hidSubmitted").val();
+        if (vl == "Yes") {
+          item["Submitted"] = "Yes";
+          $("input.hidSubmitted").val("Yes");
+        }
+        if (_approver) item["Approved"] = "Yes";
+      },
+      error: function (data) {},
+    }).done(function () {
+      var found = false;
 
-        }
-    }).done(function(){
-        var found = false
-        
-        if (!gblFound)
-        {           
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')/items?$filter=Month eq " + $("select.monthsl").val() + " and Year eq " + $("select.yearsl").val(),
-                method: "GET",
-                headers: { "accept": "application/json;odata=verbose" },
-                success: function (data) {
-                    if (data.d.results.length > 0)
-                    {
-                        found = true;
-                        recordID = data.d.results[0].ID;
-                    }
-                },
-                error: function(data)
-                {
-                    
-                }
-            }).done(function() {
-                if (found)
-                {
-                    var ans = confirm("A report already exists for the month and year selected. Do you want to overwrite it?");
-                    if (ans)
-                    {
-                        $.ajax({
-                            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')/items(" + recordID + ")",
-                            type: "POST",
-                            contentType: "application/json;odata=verbose",
-                            data: JSON.stringify(item),
-                            headers: {
-                                "Accept": "application/json;odata=verbose",
-                                "X-RequestDigest": $("#__REQUESTDIGEST").val(),
-                                "X-HTTP-Method": "MERGE",
-                                "If-Match":  "*"
-                            },
-                            success: function (data) {
-                                RecordSaved = true;
-                                alert("Record updated successfully");
-                            },
-                            error: function (data) {
-                                alert("Error in updating record");
-                            }
-                        });
-                    }
-                }
-                else
-                {
-                    $.ajax({
-                        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')/items",
-                        type: "POST",
-                        contentType: "application/json;odata=verbose",
-                        data: JSON.stringify(item),
-                        headers: {
-                            "Accept": "application/json;odata=verbose",
-                            "X-RequestDigest": $("#__REQUESTDIGEST").val()
-                        },
-                        success: function (data) {
-                            RecordSaved = true;
-                            alert("Record saved successfully");
-                        },
-                        error: function (data) {
-                            alert("Error in saving record");
-                        }
-                    });
-                }
-            });
-        }
-        else
-        {
-            //Update record
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')/items(" + recordID + ")",
+      if (!gblFound) {
+        $.ajax({
+          url:
+            _spPageContextInfo.webAbsoluteUrl +
+            "/_api/web/lists/getbytitle('Monthly Reports')/items?$filter=Month eq " +
+            $("select.monthsl").val() +
+            " and Year eq " +
+            $("select.yearsl").val(),
+          method: "GET",
+          headers: { accept: "application/json;odata=verbose" },
+          success: function (data) {
+            if (data.d.results.length > 0) {
+              found = true;
+              recordID = data.d.results[0].ID;
+            }
+          },
+          error: function (data) {},
+        }).done(function () {
+          if (found) {
+            var ans = confirm(
+              "A report already exists for the month and year selected. Do you want to overwrite it?"
+            );
+            if (ans) {
+              $.ajax({
+                url:
+                  _spPageContextInfo.webAbsoluteUrl +
+                  "/_api/web/lists/getbytitle('Monthly Reports')/items(" +
+                  recordID +
+                  ")",
                 type: "POST",
                 contentType: "application/json;odata=verbose",
                 data: JSON.stringify(item),
                 headers: {
-                    "Accept": "application/json;odata=verbose",
-                    "X-RequestDigest": $("#__REQUESTDIGEST").val(),
-                    "X-HTTP-Method": "MERGE",
-                    "If-Match":  "*"
+                  Accept: "application/json;odata=verbose",
+                  "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+                  "X-HTTP-Method": "MERGE",
+                  "If-Match": "*",
                 },
                 success: function (data) {
-                    RecordSaved = true;
-                    alert("Record updated successfully");
+                  RecordSaved = true;
+                  alert("Record updated successfully");
                 },
                 error: function (data) {
-                    alert("Error in updating record");
-                }
+                  alert("Error in updating record");
+                },
+              });
+            }
+          } else {
+            $.ajax({
+              url:
+                _spPageContextInfo.webAbsoluteUrl +
+                "/_api/web/lists/getbytitle('Monthly Reports')/items",
+              type: "POST",
+              contentType: "application/json;odata=verbose",
+              data: JSON.stringify(item),
+              headers: {
+                Accept: "application/json;odata=verbose",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+              },
+              success: function (data) {
+                RecordSaved = true;
+                alert("Record saved successfully");
+              },
+              error: function (data) {
+                alert("Error in saving record");
+              },
             });
-        }
+          }
+        });
+      } else {
+        //Update record
+        $.ajax({
+          url:
+            _spPageContextInfo.webAbsoluteUrl +
+            "/_api/web/lists/getbytitle('Monthly Reports')/items(" +
+            recordID +
+            ")",
+          type: "POST",
+          contentType: "application/json;odata=verbose",
+          data: JSON.stringify(item),
+          headers: {
+            Accept: "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "X-HTTP-Method": "MERGE",
+            "If-Match": "*",
+          },
+          success: function (data) {
+            RecordSaved = true;
+            alert("Record updated successfully");
+          },
+          error: function (data) {
+            alert("Error in updating record");
+          },
+        });
+      }
     });
-}
+  }
 
-function submitData()
-{
-    var _url = _spPageContextInfo.siteAbsoluteUrl + _spPageContextInfo.serverRequestPath + "?year=" + $("select.yearsl").val() + "&month=" + $("select.monthsl").val();
-                
-    var _body = "Please approve monthly report for " + monthNames[$("select.monthsl").val()] + " " + $("select.yearsl").val() + ". Click the link below." +
-        " Please enter your credentials if asked to. \n\n" + _url;
-    if ($("input.txtSubmitter").val() != "")
-    {
-        if (RecordSaved)
-            if ($("input.hidSubmitted").val() == "Yes")
-                window.open("mailto:psmith1117@gmail.com?subject=Please review and approve monthly report&body=" + encodeURIComponent(_body));
-            else
-            {
-                alert("Record will be saved before, sumbitted");
-                saveData("Yes");
-                window.open("mailto:psmith1117@gmail.com?subject=Please review and approve monthly report&body=" + encodeURIComponent(_body));
-            }
-        else
-        {
-            var ans = confirm("You did not save the information in this current session. Are you sure you want to submit the information for approval by the pastor?");
-            if (ans)
-            {
-                saveData("Yes");
-                window.open("mailto:psmith1117@gmail.com?subject=Please review and approve monthly report&body=" + encodeURIComponent(_body));
-            }
-        }            
-    }
-    else
-        alert("Submitter name must be entered");
-}
+  function submitData() {
+    var _url =
+      _spPageContextInfo.siteAbsoluteUrl +
+      _spPageContextInfo.serverRequestPath +
+      "?year=" +
+      $("select.yearsl").val() +
+      "&month=" +
+      $("select.monthsl").val();
 
-function approveData()
-{    
-    if ($("input.txtApprover").val() != "")
-    {
-        saveData("Yes");        
-    }
-    else
-        alert("Approver name must be entered");
-}
+    var _body =
+      "Please approve monthly report for " +
+      monthNames[$("select.monthsl").val()] +
+      " " +
+      $("select.yearsl").val() +
+      ". Click the link below." +
+      " Please enter your credentials if asked to. \n\n" +
+      _url;
+    if ($("input.txtSubmitter").val() != "") {
+      if (RecordSaved)
+        if ($("input.hidSubmitted").val() == "Yes")
+          window.open(
+            "mailto:psmith1117@gmail.com?subject=Please review and approve monthly report&body=" +
+              encodeURIComponent(_body)
+          );
+        else {
+          alert("Record will be saved before, sumbitted");
+          saveData("Yes");
+          window.open(
+            "mailto:psmith1117@gmail.com?subject=Please review and approve monthly report&body=" +
+              encodeURIComponent(_body)
+          );
+        }
+      else {
+        var ans = confirm(
+          "You did not save the information in this current session. Are you sure you want to submit the information for approval by the pastor?"
+        );
+        if (ans) {
+          saveData("Yes");
+          window.open(
+            "mailto:psmith1117@gmail.com?subject=Please review and approve monthly report&body=" +
+              encodeURIComponent(_body)
+          );
+        }
+      }
+    } else alert("Submitter name must be entered");
+  }
 
-function validateReport()
-{
+  function approveData() {
+    if ($("input.txtApprover").val() != "") {
+      saveData("Yes");
+    } else alert("Approver name must be entered");
+  }
+
+  function validateReport() {
     var found = false;
     $.ajax({
-        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Monthly Reports')/items?$filter=Month eq " + $("select.monthsl").val() + " and Year eq " + $("select.yearsl").val(),
-        method: "GET",
-        headers: { "accept": "application/json;odata=verbose" },
-        success: function (data) {
-            if (data.d.results.length > 0)
-            {
-                found = true;
-            }
-        },
-        error: function(data)
-        {
-            
+      url:
+        _spPageContextInfo.webAbsoluteUrl +
+        "/_api/web/lists/getbytitle('Monthly Reports')/items?$filter=Month eq " +
+        $("select.monthsl").val() +
+        " and Year eq " +
+        $("select.yearsl").val(),
+      method: "GET",
+      headers: { accept: "application/json;odata=verbose" },
+      success: function (data) {
+        if (data.d.results.length > 0) {
+          found = true;
         }
-    }).done(function(){
-        return found;
+      },
+      error: function (data) {},
+    }).done(function () {
+      return found;
     });
-}
+  }
 
-function clearData()
-{
-    var ans = confirm("Any information you entered will be lost. Are you sure?");
-    if (ans)
-        window.location = _spPageContextInfo.serverRequestPath;
-}
+  function clearData() {
+    var ans = confirm(
+      "Any information you entered will be lost. Are you sure?"
+    );
+    if (ans) window.location = _spPageContextInfo.serverRequestPath;
+  }
 
-
-function getParameterByName(name)
-{
-  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-  var regexString = "[\\?&]" + name + "=([^&#]*)";
-  var regex = new RegExp(regexString);
-  var found = regex.exec(window.location.search);
-  if(found == null)
-    return "";
-  else
-    return decodeURIComponent(found[1].replace(/\+/g, " "));
-}
-
+  function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexString = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexString);
+    var found = regex.exec(window.location.search);
+    if (found == null) return "";
+    else return decodeURIComponent(found[1].replace(/\+/g, " "));
+  }
 </script>
